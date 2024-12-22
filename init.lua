@@ -105,18 +105,28 @@ require 'lazy-bootstrap'
 -- [[ Configure and install plugins ]]
 require 'lazy-plugins'
 
-
-
-require'lspconfig'.julials.setup{
-    on_new_config = function(new_config, _)
-        local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
-        if require'lspconfig'.util.path.is_file(julia) then
-        -- vim.notify("Hello!")
-            new_config.cmd[1] = julia
-        end
+require('lspconfig').julials.setup {
+  on_new_config = function(new_config, _)
+    local julia = vim.fn.expand '~/.julia/environments/nvim-lspconfig/bin/julia'
+    if require('lspconfig').util.path.is_file(julia) then
+      -- vim.notify("Hello!")
+      new_config.cmd[1] = julia
     end
+  end,
 }
 
+require('lspconfig').gdscript.setup {}
 
+-- Add this to your LSP configuration section
+require('lspconfig').clangd.setup {
+  cmd = {
+    'clangd',
+    '--background-index',
+    '--clang-tidy',
+    '--header-insertion=iwyu',
+    '--completion-style=detailed',
+    '--function-arg-placeholders',
+  },
+}
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
